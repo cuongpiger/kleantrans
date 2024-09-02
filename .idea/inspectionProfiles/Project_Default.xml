@@ -1,0 +1,141 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <Languages>
+        <language minSize="808" name="Python" />
+      </Languages>
+    </inspection_tool>
+    <inspection_tool class="PyCompatibilityInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ourVersions">
+        <value>
+          <list size="1">
+            <item index="0" class="java.lang.String" itemvalue="3.8" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="107">
+            <item index="0" class="java.lang.String" itemvalue="magnum" />
+            <item index="1" class="java.lang.String" itemvalue="setuptools" />
+            <item index="2" class="java.lang.String" itemvalue="click" />
+            <item index="3" class="java.lang.String" itemvalue="os-client-config" />
+            <item index="4" class="java.lang.String" itemvalue="debtcollector" />
+            <item index="5" class="java.lang.String" itemvalue="keystoneauth1" />
+            <item index="6" class="java.lang.String" itemvalue="oslo.service" />
+            <item index="7" class="java.lang.String" itemvalue="MarkupSafe" />
+            <item index="8" class="java.lang.String" itemvalue="rfc3986" />
+            <item index="9" class="java.lang.String" itemvalue="oslo.middleware" />
+            <item index="10" class="java.lang.String" itemvalue="PasteDeploy" />
+            <item index="11" class="java.lang.String" itemvalue="python-glanceclient" />
+            <item index="12" class="java.lang.String" itemvalue="fixtures" />
+            <item index="13" class="java.lang.String" itemvalue="oslo.concurrency" />
+            <item index="14" class="java.lang.String" itemvalue="osprofiler" />
+            <item index="15" class="java.lang.String" itemvalue="cmd2" />
+            <item index="16" class="java.lang.String" itemvalue="pip" />
+            <item index="17" class="java.lang.String" itemvalue="testresources" />
+            <item index="18" class="java.lang.String" itemvalue="certifi" />
+            <item index="19" class="java.lang.String" itemvalue="python-neutronclient" />
+            <item index="20" class="java.lang.String" itemvalue="warlock" />
+            <item index="21" class="java.lang.String" itemvalue="python-openstackclient" />
+            <item index="22" class="java.lang.String" itemvalue="python-octaviaclient" />
+            <item index="23" class="java.lang.String" itemvalue="Werkzeug" />
+            <item index="24" class="java.lang.String" itemvalue="taskflow" />
+            <item index="25" class="java.lang.String" itemvalue="oslo.reports" />
+            <item index="26" class="java.lang.String" itemvalue="osc-lib" />
+            <item index="27" class="java.lang.String" itemvalue="psutil" />
+            <item index="28" class="java.lang.String" itemvalue="simplejson" />
+            <item index="29" class="java.lang.String" itemvalue="oslo.context" />
+            <item index="30" class="java.lang.String" itemvalue="prettytable" />
+            <item index="31" class="java.lang.String" itemvalue="automaton" />
+            <item index="32" class="java.lang.String" itemvalue="oslo.cache" />
+            <item index="33" class="java.lang.String" itemvalue="python-swiftclient" />
+            <item index="34" class="java.lang.String" itemvalue="python-barbicanclient" />
+            <item index="35" class="java.lang.String" itemvalue="yappi" />
+            <item index="36" class="java.lang.String" itemvalue="charset-normalizer" />
+            <item index="37" class="java.lang.String" itemvalue="Tempita" />
+            <item index="38" class="java.lang.String" itemvalue="Mako" />
+            <item index="39" class="java.lang.String" itemvalue="oslo.serialization" />
+            <item index="40" class="java.lang.String" itemvalue="python-keystoneclient" />
+            <item index="41" class="java.lang.String" itemvalue="oslo.messaging" />
+            <item index="42" class="java.lang.String" itemvalue="pydot" />
+            <item index="43" class="java.lang.String" itemvalue="networkx" />
+            <item index="44" class="java.lang.String" itemvalue="cliff" />
+            <item index="45" class="java.lang.String" itemvalue="SQLAlchemy" />
+            <item index="46" class="java.lang.String" itemvalue="testtools" />
+            <item index="47" class="java.lang.String" itemvalue="pkgutil_resolve_name" />
+            <item index="48" class="java.lang.String" itemvalue="requests" />
+            <item index="49" class="java.lang.String" itemvalue="sqlalchemy-migrate" />
+            <item index="50" class="java.lang.String" itemvalue="python-cinderclient" />
+            <item index="51" class="java.lang.String" itemvalue="websocket-client" />
+            <item index="52" class="java.lang.String" itemvalue="docker" />
+            <item index="53" class="java.lang.String" itemvalue="pyrsistent" />
+            <item index="54" class="java.lang.String" itemvalue="sqlparse" />
+            <item index="55" class="java.lang.String" itemvalue="logutils" />
+            <item index="56" class="java.lang.String" itemvalue="eventlet" />
+            <item index="57" class="java.lang.String" itemvalue="oslo.db" />
+            <item index="58" class="java.lang.String" itemvalue="oslo.i18n" />
+            <item index="59" class="java.lang.String" itemvalue="keystonemiddleware" />
+            <item index="60" class="java.lang.String" itemvalue="pyOpenSSL" />
+            <item index="61" class="java.lang.String" itemvalue="zipp" />
+            <item index="62" class="java.lang.String" itemvalue="tenacity" />
+            <item index="63" class="java.lang.String" itemvalue="urllib3" />
+            <item index="64" class="java.lang.String" itemvalue="oslo.versionedobjects" />
+            <item index="65" class="java.lang.String" itemvalue="WSME" />
+            <item index="66" class="java.lang.String" itemvalue="futurist" />
+            <item index="67" class="java.lang.String" itemvalue="dogpile.cache" />
+            <item index="68" class="java.lang.String" itemvalue="pecan" />
+            <item index="69" class="java.lang.String" itemvalue="oslo.upgradecheck" />
+            <item index="70" class="java.lang.String" itemvalue="oslo.utils" />
+            <item index="71" class="java.lang.String" itemvalue="stevedore" />
+            <item index="72" class="java.lang.String" itemvalue="oslo.metrics" />
+            <item index="73" class="java.lang.String" itemvalue="Paste" />
+            <item index="74" class="java.lang.String" itemvalue="wheel" />
+            <item index="75" class="java.lang.String" itemvalue="openstacksdk" />
+            <item index="76" class="java.lang.String" itemvalue="statsd" />
+            <item index="77" class="java.lang.String" itemvalue="packaging" />
+            <item index="78" class="java.lang.String" itemvalue="oslo.policy" />
+            <item index="79" class="java.lang.String" itemvalue="prometheus-client" />
+            <item index="80" class="java.lang.String" itemvalue="oslo.config" />
+            <item index="81" class="java.lang.String" itemvalue="importlib-resources" />
+            <item index="82" class="java.lang.String" itemvalue="typing_extensions" />
+            <item index="83" class="java.lang.String" itemvalue="pytz" />
+            <item index="84" class="java.lang.String" itemvalue="python-novaclient" />
+            <item index="85" class="java.lang.String" itemvalue="pbr" />
+            <item index="86" class="java.lang.String" itemvalue="protobuf" />
+            <item index="87" class="java.lang.String" itemvalue="netifaces" />
+            <item index="88" class="java.lang.String" itemvalue="pyperclip" />
+            <item index="89" class="java.lang.String" itemvalue="tornado" />
+            <item index="90" class="java.lang.String" itemvalue="googleapis-common-protos" />
+            <item index="91" class="java.lang.String" itemvalue="iso8601" />
+            <item index="92" class="java.lang.String" itemvalue="os-service-types" />
+            <item index="93" class="java.lang.String" itemvalue="jsonpointer" />
+            <item index="94" class="java.lang.String" itemvalue="attrs" />
+            <item index="95" class="java.lang.String" itemvalue="requestsexceptions" />
+            <item index="96" class="java.lang.String" itemvalue="jmespath" />
+            <item index="97" class="java.lang.String" itemvalue="appdirs" />
+            <item index="98" class="java.lang.String" itemvalue="autopage" />
+            <item index="99" class="java.lang.String" itemvalue="fasteners" />
+            <item index="100" class="java.lang.String" itemvalue="thrift" />
+            <item index="101" class="java.lang.String" itemvalue="netaddr" />
+            <item index="102" class="java.lang.String" itemvalue="jaeger-client" />
+            <item index="103" class="java.lang.String" itemvalue="pyparsing" />
+            <item index="104" class="java.lang.String" itemvalue="jsonpatch" />
+            <item index="105" class="java.lang.String" itemvalue="msgpack" />
+            <item index="106" class="java.lang.String" itemvalue="idna" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E501" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
