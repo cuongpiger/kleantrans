@@ -28,8 +28,6 @@ def _init_kleantrans_directory():
         }
         with open(path, 'w', encoding='utf-8') as wt:
             json.dump(data, wt)
-    else:
-        print(f"Directory already exists: {kleantrans_dir}")
 
 
 def run():

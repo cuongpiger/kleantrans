@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import \
-    QMainWindow, QCheckBox, QToolBar, QLabel, QStatusBar, QVBoxLayout, QHBoxLayout, \
-    QPlainTextEdit, QPushButton, QSpacerItem, QSizePolicy, QWidget
+    QMainWindow, QCheckBox, QToolBar, QLabel, QStatusBar, QVBoxLayout, \
+    QPlainTextEdit, QWidget
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QAction, QKeySequence, QShortcut
 
@@ -20,19 +20,41 @@ class MainWindow(QMainWindow):
         self.for_text = None
         self.window_pos = (self.pos().x(), self.pos().y())
 
-        self._setup_listeners()
-
         self.setWindowIcon(self.images['icon'])
         self.setWindowTitle("KleanTrans")
         self.setGeometry(660, 340, 600, 400)
-
-        self._setup_toolbar()
-        self._widgets_setup()
-        self._setup_dialogs()
         self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)  # Always on top
-        self._configure_hotkeys()
 
-        self._set_post_show()
+        self._setup_listeners()
+        self._setup_toolbar()
+        self._setup_widgets()
+        self._setup_dialogs()
+        self._setup_hotkeys()
+
+        self._setup_post_main_window()
+
+    def _setup_listeners(self):
+        def set_raw_text(translated_text: TranslatedText):
+            if self.raw_text is not None:
+                self.raw_text.setPlainText(translated_text.raw_text)
+
+            if self.for_text is not None:
+                self.for_text.setPlainText(translated_text.translated_text)
+
+        def hide_window(show: bool):
+            if show:
+                self.move(self.window_pos[0], self.window_pos[1])
+                self.show()
+            else:
+                self.window_pos = (self.pos().x(), self.pos().y())
+                self.hide()
+
+        self.mouse_listener = MouseListener(self.translator, self.config)
+        self.mouse_listener.raw_text_signal.connect(set_raw_text)
+
+        self.keyboard_listener = KeyboardListener(self.translator, self.config)
+        self.keyboard_listener.raw_text_signal.connect(set_raw_text)
+        self.keyboard_listener.hide_window_signal.connect(hide_window)
 
     def _setup_toolbar(self):
         btn_config = QAction(self.images['notebook'], 'Configure', self)
@@ -50,21 +72,6 @@ class MainWindow(QMainWindow):
 
         self.addToolBar(toolbar)
         self.setStatusBar(QStatusBar(self))
-
-    def _setup_listeners(self):
-        def set_raw_text(translated_text: TranslatedText):
-            if self.raw_text is not None:
-                self.raw_text.setPlainText(translated_text.raw_text)
-
-            if self.for_text is not None:
-                self.for_text.setPlainText(translated_text.translated_text)
-
-        self.mouse_listener = MouseListener(self.translator, self.config)
-        self.mouse_listener.raw_text_signal.connect(set_raw_text)
-
-        self.keyboard_listener = KeyboardListener(self.translator, self.config)
-        self.keyboard_listener.raw_text_signal.connect(set_raw_text)
-        self.keyboard_listener.hide_window_signal.connect(self._hide_window)
 
     def _configure_capture_checkbox(self, toolbar: QToolBar):
         def connect_capture_checkbox(checked: bool):
@@ -115,7 +122,7 @@ class MainWindow(QMainWindow):
         toolbar.addWidget(self.chb_hide)
         toolbar.addSeparator()
 
-    def _configure_hotkeys(self):
+    def _setup_hotkeys(self):
         def translate():
             clean_text = self.raw_text.toPlainText().strip()
             if not self.translator.ignore_clean_this_lang(self.config.source_lang):
@@ -143,9 +150,8 @@ class MainWindow(QMainWindow):
         chb_active_shortcut = QShortcut(QKeySequence('Ctrl+t'), self)
         chb_active_shortcut.activated.connect(active)  # noqa
 
-    def _widgets_setup(self):
+    def _setup_widgets(self):
         layout = QVBoxLayout()
-        btn_layout = QHBoxLayout()
 
         self.raw_text = QPlainTextEdit()
         layout.addWidget(self.raw_text)
@@ -153,57 +159,20 @@ class MainWindow(QMainWindow):
         self.for_text = QPlainTextEdit()
         layout.addWidget(self.for_text)
 
-        btn_trans = QPushButton('Translate')
-        btn_trans.setIcon(self.images['arrow'])
-        btn_trans.setStyleSheet('background-color: green')
-        btn_trans.setStatusTip('Press combination key Ctrl+Enter to translate.')
-        btn_clear = QPushButton('Clear')
-        btn_clear.setIcon(self.images['cross'])
-        btn_clear.setStyleSheet('background-color: red')
-        btn_clear.setStatusTip('Press combination key Ctrl+D to clear.')
-
-        btn_layout.addItem(QSpacerItem(
-            40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
-        btn_layout.addWidget(btn_trans)
-        btn_layout.addItem(QSpacerItem(
-            40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
-        btn_layout.addWidget(btn_clear)
-        btn_layout.addItem(QSpacerItem(
-            40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
-
-        # layout.addLayout(btn_layout) l
         container = QWidget()
         container.setLayout(layout)
         self.setCentralWidget(container)
 
-    def _hide_window(self, show: bool):
-        if show:
-            self.move(self.window_pos[0], self.window_pos[1])
-            self.show()
-        else:
-            self.window_pos = (self.pos().x(), self.pos().y())
-            self.hide()
-
     def _setup_dialogs(self):
+        def show_dialog(dialog: Dialog):
+            self.dialog.set_message(dialog)
+            self.dialog.setFixedSize(250, 70)
+            self.dialog.exec()
+
         self.dialog = CustomDialog()
-        self.translator.dialog_signal.connect(self._show_dialog)
+        self.translator.dialog_signal.connect(show_dialog)
 
-    def _show_dialog(self, dialog: Dialog):
-        print(dialog.text)
-        self.dialog.set_message(dialog)
-        self.dialog.setFixedSize(250, 70)
-        self.dialog.exec()
-
-    def _hide_raw_text(self, checked: bool):
-        if self.raw_text is not None:
-            if checked:
-                self.resize(600, 250)
-                self.raw_text.hide()
-            else:
-                self.resize(600, 400)
-                self.raw_text.show()
-
-    def _set_post_show(self):
+    def _setup_post_main_window(self):
         self._hide_raw_text(self.system_config["hide"])
 
     @property
@@ -225,3 +194,12 @@ class MainWindow(QMainWindow):
 
     def _switch_capture_feature(self):
         self.system_config["active"] = not self.system_config["active"]
+
+    def _hide_raw_text(self, checked: bool):
+        if self.raw_text is not None:
+            if checked:
+                self.resize(600, 250)
+                self.raw_text.hide()
+            else:
+                self.resize(600, 400)
+                self.raw_text.show()
