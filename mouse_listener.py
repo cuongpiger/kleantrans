@@ -20,8 +20,7 @@ class MouseListener(QObject):
     def _on_click(self, x, y, button: mouse.Button, pressed: bool):  # noqa
         if button == mouse.Button.middle and pressed:
             os.system("xclip -out -selection primary | xclip -in -selection clipboard")
-            # pyperclip.copy("$" + pyperclip.paste())  # using $ to indicate this text is generated from this program
-            text = pyperclip.paste()
+            text = self.translator.clean_text(pyperclip.paste())
             trans_text = self.translator.translate(text, "en", "vi")
-            print("The got text is: ", trans_text)
+
             self.raw_text_signal.emit(TranslatedText(text, trans_text))
