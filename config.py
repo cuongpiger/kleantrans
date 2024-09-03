@@ -20,7 +20,7 @@ def _load_images():
 class Config:
     def __init__(self):
         self.images = _load_images()
-        self.config = self._load_config()
+        self.system_config = self._load_config()
 
     def _load_config(self):  # noqa
         path = Path.home() / ".kleantrans/config.json"
@@ -31,4 +31,12 @@ class Config:
     def save_config(self):
         path = Path.home() / ".kleantrans/config.json"
         with open(path, 'w', encoding='utf-8') as wt:
-            json.dump(self.config, wt)
+            json.dump(self.system_config, wt)
+
+    @property
+    def source_lang(self):
+        return self.system_config["swap"][0]
+
+    @property
+    def target_lang(self):
+        return self.system_config["swap"][1]

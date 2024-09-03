@@ -5,15 +5,17 @@ from PyQt6.QtCore import pyqtSignal, QObject
 from pynput import keyboard
 
 from translator import Translator, TranslatedText
+from config import Config
 
 
 class KeyboardListener(QObject):
     raw_text_signal = pyqtSignal(TranslatedText)
     hide_window_signal = pyqtSignal(bool)
 
-    def __init__(self, translator: Translator):
+    def __init__(self, translator: Translator, system_config: Config):
         super().__init__()
         self.translator = translator
+        self.system_config = system_config
         self.switch = True
 
         self.window_combination = keyboard.HotKey(
@@ -44,8 +46,9 @@ class KeyboardListener(QObject):
     def _on_translate(self):
         if self.switch:
             os.system("xclip -out -selection primary | xclip -in -selection clipboard")
+
             text = self.translator.clean_text(pyperclip.paste())
-            trans_text = self.translator.translate(text, "en", "vi")
+            trans_text = self.translator.translate(text, self.system_config.source_lang, self.system_config.target_lang)
 
             # Send signal to main_window.py
             self.raw_text_signal.emit(TranslatedText(text, trans_text))

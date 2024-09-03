@@ -47,3 +47,9 @@ class Translator(QObject):
     def clean_text(self, text):
         text = re.sub(r"\s+", " ", re.sub(self.pattern, " ", text.strip())).strip()
         return text
+
+    def ignore_clean_this_lang(self, lang: str):
+        if lang in ("vi",):
+            return True
+
+        return False

@@ -1,8 +1,8 @@
 from PyQt6.QtWidgets import \
     QMainWindow, QCheckBox, QToolBar, QLabel, QStatusBar, QVBoxLayout, QHBoxLayout, \
-    QPlainTextEdit, QPushButton, QSpacerItem, QSizePolicy, QWidget, QDialog
+    QPlainTextEdit, QPushButton, QSpacerItem, QSizePolicy, QWidget
 from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QAction, QIcon, QKeySequence
+from PyQt6.QtGui import QAction, QIcon, QKeySequence, QShortcut
 
 from config import Config
 from mouse_listener import MouseListener
@@ -20,21 +20,21 @@ class MainWindow(QMainWindow):
         self.for_text = None
         self.window_pos = (self.pos().x(), self.pos().y())
 
-        self._setup_listeners(self.translator)
+        self._setup_listeners()
 
-        self.setWindowIcon(self.config.images['icon'])
+        self.setWindowIcon(self.images['icon'])
         self.setWindowTitle("KleanTrans")
         self.setGeometry(660, 340, 600, 400)
-        self._toolbar_setup()
+        self._setup_toolbar()
         self._widgets_setup()
         self._setup_dialogs()
         self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)  # Always on top
-        self._setup_hotkeys()
+        self._configure_hotkeys()
 
         self._set_post_show()
 
-    def _toolbar_setup(self):
-        btn_config = QAction(self.config.images['notebook'], 'Configure', self)
+    def _setup_toolbar(self):
+        btn_config = QAction(self.images['notebook'], 'Configure', self)
         btn_config.setStatusTip('Configure the characters used to clean text.')
         # btn_config.triggered.connect(self.show_config_window)
 
@@ -44,15 +44,16 @@ class MainWindow(QMainWindow):
         chb_hide = QCheckBox('Hide')
         chb_hide.setStatusTip('Hide the top text box.')
         chb_hide.clicked.connect(self._checkbox_hide_clicked)
-        chb_hide.setChecked(self.config.config["hide"])
+        chb_hide.setChecked(self._main_window_appear())
 
         toolbar = QToolBar()
-        toolbar.setIconSize(QSize(16, 16))
         toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+        toolbar.setIconSize(QSize(16, 16))
+
+        self._configure_swap_button(toolbar)
 
         # toolbar.addSeparator()
         # toolbar.addWidget(self.chb_active)
-        toolbar.addSeparator()
         toolbar.addWidget(chb_hide)
         toolbar.addSeparator()
         toolbar.addSeparator()
@@ -61,20 +62,65 @@ class MainWindow(QMainWindow):
         self.addToolBar(toolbar)
         self.setStatusBar(QStatusBar(self))
 
-    def _setup_listeners(self, translator: Translator):
-        self.mouse_listener = MouseListener(translator)
+    def _setup_listeners(self):
+        self.mouse_listener = MouseListener(self.translator, self.system_config)
         self.mouse_listener.raw_text_signal.connect(self._set_raw_text)
 
-        self.keyboard_listener = KeyboardListener(translator)
+        self.keyboard_listener = KeyboardListener(self.translator, self.system_config)
         self.keyboard_listener.raw_text_signal.connect(self._set_raw_text)
         self.keyboard_listener.hide_window_signal.connect(self._hide_window)
 
-    def _setup_hotkeys(self):
-        pass
+    def _configure_swap_button(self, toolbar: QToolBar):
+        def _connect_swap_button():
+            self.system_config['swap'] = [self.system_config['swap'][1], self.system_config['swap'][0]]
+            self.btn_swap.setText(f"{self.system_config['swap'][0]} ➜ {self.system_config['swap'][1]}")
+            self.raw_text.setPlainText("")
+            self.config.save_config()
+
+        self.btn_swap = QAction(
+            self.images['swap'],
+            f"{self.system_config['swap'][0]} ➜ {self.system_config['swap'][1]}", self)
+
+        self.btn_swap.setStatusTip('Press Ctrl+W to swap two languages.')
+        self.btn_swap.setShortcut(QKeySequence('Ctrl+w'))
+
+        # Setup trigger
+        self.btn_swap.triggered.connect(_connect_swap_button)  # noqa
+
+        # Add this widget into the toolbar layout
+        toolbar.addAction(self.btn_swap)
+        toolbar.addSeparator()
+
+    def _configure_hotkeys(self):
+        def translate():
+            clean_text = self.raw_text.toPlainText().strip()
+            if not self.translator.ignore_clean_this_lang(self.config.source_lang):
+                clean_text = self.translator.clean_text(clean_text)
+
+            translated_text = self.translator.translate(clean_text, self.config.source_lang,
+                                                        self.config.target_lang)
+            self.raw_text.setPlainText(clean_text)
+            self.for_text.setPlainText(translated_text)
+
+        def clear():
+            self.raw_text.setPlainText('')
+            self.for_text.setPlainText('')
+
+        def active():
+            pass
+
+        btn_trans_shortcut = QShortcut(QKeySequence('Ctrl+Return'), self)
+        btn_trans_shortcut.activated.connect(translate)  # noqa
+
+        btn_clear_shortcut = QShortcut(QKeySequence('Ctrl+d'), self)
+        btn_clear_shortcut.activated.connect(clear)  # noqa
+
+        chb_active_shortcut = QShortcut(QKeySequence('Ctrl+t'), self)
+        chb_active_shortcut.activated.connect(active)  # noqa
 
     def _checkbox_hide_clicked(self, checked):
         self._hide_raw_text(checked)
-        self.config.config["hide"] = not self.config.config["hide"]
+        self._main_window_switch()
         self.config.save_config()
 
     def _widgets_setup(self):
@@ -88,11 +134,11 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.for_text)
 
         btn_trans = QPushButton('Translate')
-        btn_trans.setIcon(self.config.images['arrow'])
+        btn_trans.setIcon(self.images['arrow'])
         btn_trans.setStyleSheet('background-color: green')
         btn_trans.setStatusTip('Press combination key Ctrl+Enter to translate.')
         btn_clear = QPushButton('Clear')
-        btn_clear.setIcon(self.config.images['cross'])
+        btn_clear.setIcon(self.images['cross'])
         btn_clear.setStyleSheet('background-color: red')
         btn_clear.setStatusTip('Press combination key Ctrl+D to clear.')
 
@@ -145,4 +191,18 @@ class MainWindow(QMainWindow):
                 self.raw_text.show()
 
     def _set_post_show(self):
-        self._hide_raw_text(self.config.config["hide"])
+        self._hide_raw_text(self.system_config["hide"])
+
+    @property
+    def images(self):
+        return self.config.images
+
+    @property
+    def system_config(self):
+        return self.config.system_config
+
+    def _main_window_appear(self) -> bool:
+        return self.system_config["hide"]
+
+    def _main_window_switch(self):
+        self.system_config["hide"] = not self.system_config["hide"]
