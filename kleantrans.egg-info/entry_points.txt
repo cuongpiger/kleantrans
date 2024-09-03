@@ -1,2 +1,0 @@
-[console_scripts]
-kleantrans = app.__main__:run
