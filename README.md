@@ -11,3 +11,12 @@
   ```bash
   pip install -r requirements.txt --upgrade
   ```
+
+- Install `kleantrans`:
+  ```bash
+  # Ubuntu 23.04 or higher, Python 3.12 or higher
+  pip3 install kleantrans --upgrade --break-system-packages
+  
+  # Remaining cases
+  pip3 install kleantrans --upgrade
+  ```
