@@ -4,13 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kleantrans"
-version = "1.0.5"
+version = "1.0.6"
 description = "Clean and translate your highlight text"
 readme = "README.md"
 authors = [{ name = "Cuong. Duong Manh", email = "cuongpigerr@gmail.com" }]
 dependencies = [
     "altgraph>=0.17.4",
-    "evdev >= 1.6.1",
     "packaging==24.1",
     "pyinstaller==6.10.0",
     "pyinstaller-hooks-contrib>=2024.8",
