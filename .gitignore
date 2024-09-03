@@ -2,3 +2,6 @@
 /dist/
 /build/
 /kleantrans.egg-info/
+/app/__pycache__/
+.idea/
+.vscode/
