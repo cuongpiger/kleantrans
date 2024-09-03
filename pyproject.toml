@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kleantrans"
-version = "0.0.10"
+version = "1.0.0"
 description = "Clean and translate your highlight text"
 readme = "README.md"
 authors = [{ name = "Cuong. Duong Manh", email = "cuongpigerr@gmail.com" }]
