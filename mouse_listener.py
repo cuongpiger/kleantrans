@@ -24,4 +24,3 @@ class MouseListener(QObject):
             trans_text = self.translator.translate(text, "en", "vi")
             print("The got text is: ", trans_text)
 
-            self.raw_text_signal.(text)
