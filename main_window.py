@@ -44,19 +44,8 @@ class MainWindow(QMainWindow):
         toolbar.setIconSize(QSize(16, 16))
 
         self._configure_capture_checkbox(toolbar)
-
-        chb_hide = QCheckBox('Hide')
-        chb_hide.setStatusTip('Hide the top text box.')
-        chb_hide.clicked.connect(self._checkbox_hide_clicked)  # noqa
-        chb_hide.setChecked(self._main_window_appear())
-
         self._configure_swap_button(toolbar)
-
-        # toolbar.addSeparator()
-        # toolbar.addWidget(self.chb_active)
-        toolbar.addWidget(chb_hide)
-        toolbar.addSeparator()
-        toolbar.addSeparator()
+        self._configure_checkbox_hide(toolbar)
         toolbar.addWidget(QLabel("Copyright © by Cuong. Duong Manh"))
 
         self.addToolBar(toolbar)
@@ -92,7 +81,7 @@ class MainWindow(QMainWindow):
         toolbar.addSeparator()
 
     def _configure_swap_button(self, toolbar: QToolBar):
-        def _connect_swap_button():
+        def connect_swap_button():
             self.system_config['swap'] = [self.system_config['swap'][1], self.system_config['swap'][0]]
             self.btn_swap.setText(f"{self.system_config['swap'][0]} ➜ {self.system_config['swap'][1]}")
             self.raw_text.setPlainText("")
@@ -106,10 +95,24 @@ class MainWindow(QMainWindow):
         self.btn_swap.setShortcut(QKeySequence('Ctrl+w'))
 
         # Setup trigger
-        self.btn_swap.triggered.connect(_connect_swap_button)  # noqa
+        self.btn_swap.triggered.connect(connect_swap_button)  # noqa
 
         # Add this widget into the toolbar layout
         toolbar.addAction(self.btn_swap)
+        toolbar.addSeparator()
+
+    def _configure_checkbox_hide(self, toolbar: QToolBar):
+        def connect_hide_checkbox(checked):
+            self._hide_raw_text(checked)
+            self._main_window_switch()
+            self.config.save_config()
+
+        self.chb_hide = QCheckBox('Hide')
+        self.chb_hide.setStatusTip('Hide the top text box.')
+        self.chb_hide.clicked.connect(connect_hide_checkbox)  # noqa
+        self.chb_hide.setChecked(self._main_window_appear())
+
+        toolbar.addWidget(self.chb_hide)
         toolbar.addSeparator()
 
     def _configure_hotkeys(self):
@@ -128,7 +131,8 @@ class MainWindow(QMainWindow):
             self.for_text.setPlainText('')
 
         def active():
-            pass
+            self._switch_capture_feature()
+            self.chb_active.setChecked(self._capture_text_appear())
 
         btn_trans_shortcut = QShortcut(QKeySequence('Ctrl+Return'), self)
         btn_trans_shortcut.activated.connect(translate)  # noqa
@@ -138,11 +142,6 @@ class MainWindow(QMainWindow):
 
         chb_active_shortcut = QShortcut(QKeySequence('Ctrl+t'), self)
         chb_active_shortcut.activated.connect(active)  # noqa
-
-    def _checkbox_hide_clicked(self, checked):
-        self._hide_raw_text(checked)
-        self._main_window_switch()
-        self.config.save_config()
 
     def _widgets_setup(self):
         layout = QVBoxLayout()
