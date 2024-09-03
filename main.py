@@ -32,11 +32,9 @@ def _init_kleantrans_directory():
         print(f"Directory already exists: {kleantrans_dir}")
 
 
-def init():
+def run():
     _init_kleantrans_directory()
 
-
-def run():
     translator = Translator()
 
     app = QApplication(sys.argv)
@@ -48,5 +46,4 @@ def run():
     app.exec()
 
 
-init()
 run()
