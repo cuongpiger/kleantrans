@@ -1,12 +1,22 @@
-# Pre-requisites
-- Python 3.11 or higher.
-- Ubuntu 22.04 or higher.
+# KleanTrans ![PyPI](https://img.shields.io/pypi/v/kleantrans?label=kleantrans)
+
+_KleanTrans is an open-source application with a clean and simple interface for translating text using PyQT6._
+
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+
+## Pre-requisites
+
+| # | OS               | Python Version | Pass |
+|---|------------------|----------------|------|
+| 1 | Ubuntu 22.04 LTS | `3.11.x`       | ✅    |
+| 2 | Ubuntu 24.04 LTS | `3.12.x`       | ✅    |
+
 - Install the dependencies Ubuntu packages:
   ```bash
   sudo apt update &&
   sudo apt install -y translate-shell xclip libxcb-cursor-dev --upgrade
   ```
-  
+
 - Install required Python packages:
   ```bash
   pip install -r requirements.txt --upgrade
@@ -20,3 +30,20 @@
   # Remaining cases
   pip3 install kleantrans --upgrade
   ```
+
+## Demonstration
+
+![](kleantrans.gif)
+
+## Usage:
+- Run the application:
+  ```bash
+  kleantrans
+  ```
+- Currently, I only support the following languages:
+  - English
+  - Vietnamese
+
+- To translate text, using mouse to select the text and press `Ctrl + CMD` _(**Window key** on the Windows OS)_ or **Middle Mouse** to translate the text.
+
+- To SHOW/HIDE the application, press `SHIFT + CMD`.
