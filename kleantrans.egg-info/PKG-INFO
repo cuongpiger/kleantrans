@@ -1,11 +1,11 @@
 Metadata-Version: 2.1
 Name: kleantrans
-Version: 0.0.10
+Version: 0.0.20
 Summary: Clean and translate your highlight text
 Author-email: "Cuong. Duong Manh" <cuongpigerr@gmail.com>
 Description-Content-Type: text/markdown
 Requires-Dist: altgraph>=0.17.4
-Requires-Dist: evdev>=1.7.1
+Requires-Dist: evdev>=1.6.1
 Requires-Dist: packaging==24.1
 Requires-Dist: pyinstaller==6.10.0
 Requires-Dist: pyinstaller-hooks-contrib>=2024.8

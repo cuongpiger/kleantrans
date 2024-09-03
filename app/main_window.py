@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import \
     QMainWindow, QCheckBox, QToolBar, QLabel, QStatusBar, QVBoxLayout, \
     QPlainTextEdit, QWidget, QMenu, QSystemTrayIcon, QApplication
 from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QAction, QKeySequence, QShortcut, QIcon
+from PyQt6.QtGui import QAction, QKeySequence, QShortcut
 
 from .config import Config
 from .mouse_listener import MouseListener

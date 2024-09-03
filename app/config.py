@@ -1,20 +1,23 @@
 import json
+import os
 from pathlib import Path
 
 from PyQt6.QtGui import QIcon
 
+CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+
 
 def _load_images():
     return {
-        'icon': QIcon('app/images/icon.png'),
-        'notebook': QIcon('app/images/notebook--pencil.png'),
-        'document': QIcon('app/images/blue-document--plus.png'),
-        'arrow': QIcon('app/images/arrow-turn-000-left.png'),
-        'cross': QIcon('app/images/cross.png'),
-        'swap': QIcon('app/images/swap.png'),
-        'exit': QIcon('app/images/exit.png'),
-        'window': QIcon('app/images/window.png'),
-        'highlight': QIcon('app/images/highlighter-text.png')
+        'icon': QIcon(os.path.join(CURRENT_DIRECTORY, "images", "icon.png")),
+        'notebook': QIcon(os.path.join(CURRENT_DIRECTORY, "images", "notebook--pencil.png")),
+        'document': QIcon(os.path.join(CURRENT_DIRECTORY, "images", "blue-document--plus.png")),
+        'arrow': QIcon(os.path.join(CURRENT_DIRECTORY, "images", "arrow-turn-000-left.png")),
+        'cross': QIcon(os.path.join(CURRENT_DIRECTORY, "images", "cross.png")),
+        'swap': QIcon(os.path.join(CURRENT_DIRECTORY, "images", "swap.png")),
+        'exit': QIcon(os.path.join(CURRENT_DIRECTORY, "images", "exit.png")),
+        'window': QIcon(os.path.join(CURRENT_DIRECTORY, "images", "window.png")),
+        'highlight': QIcon(os.path.join(CURRENT_DIRECTORY, "images", "highlighter-text.png")),
     }
 
 
@@ -45,4 +48,3 @@ class Config:
     @property
     def active_capture_text(self):
         return self.system_config["active"]
-
