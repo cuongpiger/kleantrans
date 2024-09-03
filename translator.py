@@ -2,6 +2,20 @@ import subprocess
 import re
 
 
+class TranslatedText:
+    def __init__(self, raw_text: str, translated_text: str):
+        self._raw_text = raw_text
+        self._translated_text = translated_text
+
+    @property
+    def raw_text(self):
+        return self._raw_text
+
+    @property
+    def translated_text(self):
+        return self._translated_text
+
+
 class Translator:
     def __init__(self):
         self.pattern = r"[^a-zA-Z0-9?!'()\.,+-=:;\s]"

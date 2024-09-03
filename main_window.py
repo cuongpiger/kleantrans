@@ -4,13 +4,17 @@ from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QAction, QIcon, QKeySequence
 
 from config import Config
+from mouse_listener import MouseListener
+from translator import Translator, TranslatedText
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, config: Config):
+    def __init__(self, config: Config, translator: Translator):
         super().__init__()
         self.config = config
         self.raw_text = None
+        self.for_text = None
+        self._setup_listeners(translator)
 
         self.setWindowIcon(self.config.images['icon'])
         self.setWindowTitle("KleanTrans")
@@ -26,8 +30,7 @@ class MainWindow(QMainWindow):
         # btn_config.triggered.connect(self.show_config_window)
 
         self.chb_active = QCheckBox('Active')
-        self.chb_active.setStatusTip(
-            'Press Ctrl+T to switch text translation from clipboard on or off.')
+        self.chb_active.setStatusTip('Press Ctrl+T to switch text translation from clipboard on or off.')
 
         chb_hide = QCheckBox('Hide')
         chb_hide.setStatusTip('Hide the top text box.')
@@ -47,6 +50,10 @@ class MainWindow(QMainWindow):
 
         self.addToolBar(toolbar)
         self.setStatusBar(QStatusBar(self))
+
+    def _setup_listeners(self, translator: Translator):
+        self.mouse_listener = MouseListener(translator)
+        self.mouse_listener.raw_text_signal.connect(self._set_raw_text)
 
     def _setup_hotkeys(self):
         pass
@@ -72,8 +79,7 @@ class MainWindow(QMainWindow):
         btn_trans = QPushButton('Translate')
         btn_trans.setIcon(self.config.images['arrow'])
         btn_trans.setStyleSheet('background-color: green')
-        btn_trans.setStatusTip(
-            'Press combination key Ctrl+Enter to translate.')
+        btn_trans.setStatusTip('Press combination key Ctrl+Enter to translate.')
         btn_clear = QPushButton('Clear')
         btn_clear.setIcon(self.config.images['cross'])
         btn_clear.setStyleSheet('background-color: red')
@@ -93,6 +99,9 @@ class MainWindow(QMainWindow):
         container.setLayout(layout)
         self.setCentralWidget(container)
 
-    def set_raw_text(self, text):
+    def _set_raw_text(self, translated_text: TranslatedText):
         if self.raw_text is not None:
-            self.raw_text.setPlainText(text)
+            self.raw_text.setPlainText(translated_text.raw_text)
+
+        if self.for_text is not None:
+            self.for_text.setPlainText(translated_text.translated_text)

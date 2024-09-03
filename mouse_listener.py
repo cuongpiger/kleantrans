@@ -5,14 +5,15 @@ from PyQt6.QtCore import pyqtSignal, QObject
 
 from pynput import mouse
 
-from translator import Translator
+from translator import Translator, TranslatedText
 
 
 class MouseListener(QObject):
+    raw_text_signal = pyqtSignal(TranslatedText)
+
     def __init__(self, translator: Translator):
         super().__init__()
         self.translator = translator
-        self.raw_text_signal = pyqtSignal(str)
         self.mouse = mouse.Listener(on_click=self._on_click)
         self.mouse.start()
 
@@ -23,4 +24,4 @@ class MouseListener(QObject):
             text = pyperclip.paste()
             trans_text = self.translator.translate(text, "en", "vi")
             print("The got text is: ", trans_text)
-
+            self.raw_text_signal.emit(TranslatedText(text, trans_text))
