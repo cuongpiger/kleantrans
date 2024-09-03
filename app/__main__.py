@@ -2,9 +2,9 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from main_window import MainWindow
-from translator import Translator
-from config import Config
+from .main_window import MainWindow
+from .translator import Translator
+from .config import Config
 
 
 def _init_kleantrans_directory():
@@ -43,7 +43,6 @@ def run():
     MainWindow(app, config, translator)
 
     app.exec()
-
 
 # if __name__ == '__main__':
 #     sys.exit(run())

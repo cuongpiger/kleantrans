@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+kleantrans.egg-info/PKG-INFO
+kleantrans.egg-info/SOURCES.txt
+kleantrans.egg-info/dependency_links.txt
+kleantrans.egg-info/entry_points.txt
+kleantrans.egg-info/requires.txt
+kleantrans.egg-info/top_level.txt

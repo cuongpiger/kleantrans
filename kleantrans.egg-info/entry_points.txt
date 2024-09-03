@@ -1,0 +1,2 @@
+[console_scripts]
+kleantrans = main:run

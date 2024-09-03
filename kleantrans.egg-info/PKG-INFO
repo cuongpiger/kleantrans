@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: kleantrans
+Version: 0.0.1
+Summary: Clean and translate your highlight text
+Author-email: "Cuong. Duong Manh" <cuongpigerr@gmail.com>
+Description-Content-Type: text/markdown
+Requires-Dist: altgraph>=0.17.4
+Requires-Dist: evdev>=1.7.1
+Requires-Dist: packaging==24.1
+Requires-Dist: pyinstaller==6.10.0
+Requires-Dist: pyinstaller-hooks-contrib>=2024.8
+Requires-Dist: pynput>=1.7.7
+Requires-Dist: pyperclip>=1.9.0
+Requires-Dist: PyQt6>=6.7.1
+Requires-Dist: PyQt6-Qt6>=6.7.2
+Requires-Dist: PyQt6_sip>=13.8.0
+Requires-Dist: python-xlib>=0.33
+Requires-Dist: setuptools>=74.0.0
+Requires-Dist: six>=1.16.0
+
+# Pre-requisites
+- Python 3.11 or higher.
+- Ubuntu 22.04 or higher.
+- Install the dependencies Ubuntu packages:
+  ```bash
+  sudo apt update &&
+  sudo apt install -y translate-shell xclip libxcb-cursor-dev --upgrade
+  ```
+  
+- Install required Python packages:
+  ```bash
+  pip install -r requirements.txt --upgrade
+  ```

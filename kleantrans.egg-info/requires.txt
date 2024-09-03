@@ -1,0 +1,13 @@
+altgraph>=0.17.4
+evdev>=1.7.1
+packaging==24.1
+pyinstaller==6.10.0
+pyinstaller-hooks-contrib>=2024.8
+pynput>=1.7.7
+pyperclip>=1.9.0
+PyQt6>=6.7.1
+PyQt6-Qt6>=6.7.2
+PyQt6_sip>=13.8.0
+python-xlib>=0.33
+setuptools>=74.0.0
+six>=1.16.0
