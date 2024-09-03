@@ -1,5 +1,7 @@
+MANIFEST.in
 README.md
 pyproject.toml
+setup.py
 app/__init__.py
 app/__main__.py
 app/config.py
