@@ -43,8 +43,7 @@ class MainWindow(QMainWindow):
         toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         toolbar.setIconSize(QSize(16, 16))
 
-        self.chb_active = QCheckBox('Active')
-        self.chb_active.setStatusTip('Press Ctrl+T to switch text translation from clipboard on or off.')
+        self._configure_capture_checkbox(toolbar)
 
         chb_hide = QCheckBox('Hide')
         chb_hide.setStatusTip('Hide the top text box.')
@@ -71,16 +70,22 @@ class MainWindow(QMainWindow):
             if self.for_text is not None:
                 self.for_text.setPlainText(translated_text.translated_text)
 
-        self.mouse_listener = MouseListener(self.translator, self.system_config)
+        self.mouse_listener = MouseListener(self.translator, self.config)
         self.mouse_listener.raw_text_signal.connect(set_raw_text)
 
-        self.keyboard_listener = KeyboardListener(self.translator, self.system_config)
+        self.keyboard_listener = KeyboardListener(self.translator, self.config)
         self.keyboard_listener.raw_text_signal.connect(set_raw_text)
         self.keyboard_listener.hide_window_signal.connect(self._hide_window)
 
-    def _configure_active_checkbox(self, toolbar: QToolBar):
-        self.chb_active = QCheckBox('Active')
-        self.chb_active.setStatusTip('Press Ctrl+T to switch text translation from clipboard on or off.')
+    def _configure_capture_checkbox(self, toolbar: QToolBar):
+        def connect_capture_checkbox(checked: bool):
+            self._switch_capture_feature()
+            self.config.save_config()
+
+        self.chb_active = QCheckBox('Capture')
+        self.chb_active.setStatusTip('Press Ctrl+T to turn ON/OFF translating from text capture.')
+        self.chb_active.clicked.connect(connect_capture_checkbox)  # noqa
+        self.chb_active.setChecked(self._capture_text_appear())
 
         # Add this widget into the toolbar layout
         toolbar.addWidget(self.chb_active)
@@ -215,3 +220,9 @@ class MainWindow(QMainWindow):
 
     def _main_window_switch(self):
         self.system_config["hide"] = not self.system_config["hide"]
+
+    def _capture_text_appear(self) -> bool:
+        return self.system_config["active"]
+
+    def _switch_capture_feature(self):
+        self.system_config["active"] = not self.system_config["active"]

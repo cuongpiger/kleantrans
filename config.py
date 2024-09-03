@@ -40,3 +40,7 @@ class Config:
     @property
     def target_lang(self):
         return self.system_config["swap"][1]
+
+    @property
+    def active_capture_text(self):
+        return self.system_config["active"]

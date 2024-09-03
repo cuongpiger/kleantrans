@@ -44,7 +44,8 @@ class KeyboardListener(QObject):
         self.switch = not self.switch
 
     def _on_translate(self):
-        if self.switch:
+        # If the screen is show and user turn on translating from capture text fearure
+        if self.switch and self.system_config.active_capture_text:
             os.system("xclip -out -selection primary | xclip -in -selection clipboard")
 
             text = self.translator.clean_text(pyperclip.paste())

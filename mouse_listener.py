@@ -20,7 +20,7 @@ class MouseListener(QObject):
         self.mouse.start()
 
     def _on_click(self, x, y, button: mouse.Button, pressed: bool):  # noqa
-        if button == mouse.Button.middle and pressed:
+        if self.system_config.active_capture_text and button == mouse.Button.middle and pressed:
             os.system("xclip -out -selection primary | xclip -in -selection clipboard")
 
             text = self.translator.clean_text(pyperclip.paste())
