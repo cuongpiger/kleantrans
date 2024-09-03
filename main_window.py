@@ -1,8 +1,8 @@
 from PyQt6.QtWidgets import \
     QMainWindow, QCheckBox, QToolBar, QLabel, QStatusBar, QVBoxLayout, \
-    QPlainTextEdit, QWidget
+    QPlainTextEdit, QWidget, QMenu, QSystemTrayIcon, QApplication
 from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QAction, QKeySequence, QShortcut
+from PyQt6.QtGui import QAction, QKeySequence, QShortcut, QIcon
 
 from config import Config
 from mouse_listener import MouseListener
@@ -12,8 +12,9 @@ from translator import Translator, TranslatedText
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, config: Config, translator: Translator):
+    def __init__(self, app: QApplication, config: Config, translator: Translator):
         super().__init__()
+        self.app = app
         self.config = config
         self.translator = translator
         self.raw_text = None
@@ -30,6 +31,7 @@ class MainWindow(QMainWindow):
         self._setup_widgets()
         self._setup_dialogs()
         self._setup_hotkeys()
+        self._setup_tray()
 
         self._setup_post_main_window()
 
@@ -149,6 +151,40 @@ class MainWindow(QMainWindow):
 
         chb_active_shortcut = QShortcut(QKeySequence('Ctrl+t'), self)
         chb_active_shortcut.activated.connect(active)  # noqa
+
+    def _setup_tray(self):
+        def connect_capture_checkbox():
+            self._switch_capture_feature()
+
+            capture_text_inside = "Enable Capture"
+            if self.config.active_capture_text:
+                capture_text_inside = "Disable Capture"
+
+            self.capture_action.setText(capture_text_inside)
+            self.chb_active.setChecked(self._capture_text_appear())
+            self.config.save_config()
+
+        capture_text = "Enable Capture"
+        if self.config.active_capture_text:
+            capture_text = "Disable Capture"
+
+        self.show_action = QAction(self.images['window'], 'Show')
+        self.show_action.triggered.connect(self.show)  # noqa
+        self.quit_action = QAction(self.images['exit'], 'Quit')
+        self.quit_action.triggered.connect(self.app.quit)  # noqa
+        self.capture_action = QAction(self.images['highlight'], capture_text)
+        self.capture_action.triggered.connect(connect_capture_checkbox)  # noqa
+
+        self.menu = QMenu()
+        self.menu.addAction(self.show_action)
+        self.menu.addAction(self.capture_action)
+        self.menu.addAction(self.quit_action)
+
+        self.tray = QSystemTrayIcon()
+        self.tray.setIcon(self.images['icon'])
+        self.tray.setVisible(True)
+        self.tray.setContextMenu(self.menu)
+        self.tray.show()
 
     def _setup_widgets(self):
         layout = QVBoxLayout()

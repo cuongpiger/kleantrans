@@ -36,10 +36,11 @@ def run():
     translator = Translator()
 
     app = QApplication(sys.argv)
+    app.setQuitOnLastWindowClosed(False)
+    app.setStyle('Fusion')
 
     config = Config()
-    window = MainWindow(config, translator)
-    window.show()
+    MainWindow(app, config, translator)
 
     app.exec()
 

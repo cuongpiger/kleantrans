@@ -13,7 +13,8 @@ def _load_images():
         'cross': QIcon('images/cross.png'),
         'swap': QIcon('images/swap.png'),
         'exit': QIcon('images/exit.png'),
-        'window': QIcon('images/window.png')
+        'window': QIcon('images/window.png'),
+        'highlight': QIcon('images/highlighter-text.png')
     }
 
 
@@ -44,3 +45,4 @@ class Config:
     @property
     def active_capture_text(self):
         return self.system_config["active"]
+
