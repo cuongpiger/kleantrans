@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=65.5.0", "wheel"]
+requires = ["setuptools>=74.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "kleantrans"
-version = "0.0.3"
+version = "0.0.10"
 description = "Clean and translate your highlight text"
 readme = "README.md"
 authors = [{ name = "Cuong. Duong Manh", email = "cuongpigerr@gmail.com" }]
@@ -23,6 +23,12 @@ dependencies = [
     "setuptools>=74.0.0",
     "six>=1.16.0",
 ]
+
+[tool.setuptools.package-data]
+"kleantrans" = ["app/images/*"]
+
+[tool.setuptools]
+include-package-data = true
 
 [project.scripts]
 kleantrans = "app.__main__:run"

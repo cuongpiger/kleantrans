@@ -6,15 +6,15 @@ from PyQt6.QtGui import QIcon
 
 def _load_images():
     return {
-        'icon': QIcon('images/icon.png'),
-        'notebook': QIcon('images/notebook--pencil.png'),
-        'document': QIcon('images/blue-document--plus.png'),
-        'arrow': QIcon('images/arrow-turn-000-left.png'),
-        'cross': QIcon('images/cross.png'),
-        'swap': QIcon('images/swap.png'),
-        'exit': QIcon('images/exit.png'),
-        'window': QIcon('images/window.png'),
-        'highlight': QIcon('images/highlighter-text.png')
+        'icon': QIcon('app/images/icon.png'),
+        'notebook': QIcon('app/images/notebook--pencil.png'),
+        'document': QIcon('app/images/blue-document--plus.png'),
+        'arrow': QIcon('app/images/arrow-turn-000-left.png'),
+        'cross': QIcon('app/images/cross.png'),
+        'swap': QIcon('app/images/swap.png'),
+        'exit': QIcon('app/images/exit.png'),
+        'window': QIcon('app/images/window.png'),
+        'highlight': QIcon('app/images/highlighter-text.png')
     }
 
 
