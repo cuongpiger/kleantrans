@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import \
     QMainWindow, QCheckBox, QToolBar, QLabel, QStatusBar, QVBoxLayout, QHBoxLayout, \
     QPlainTextEdit, QPushButton, QSpacerItem, QSizePolicy, QWidget
 from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QAction, QIcon, QKeySequence, QShortcut
+from PyQt6.QtGui import QAction, QKeySequence, QShortcut
 
 from config import Config
 from mouse_listener import MouseListener
@@ -25,6 +25,7 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(self.images['icon'])
         self.setWindowTitle("KleanTrans")
         self.setGeometry(660, 340, 600, 400)
+
         self._setup_toolbar()
         self._widgets_setup()
         self._setup_dialogs()
@@ -38,17 +39,17 @@ class MainWindow(QMainWindow):
         btn_config.setStatusTip('Configure the characters used to clean text.')
         # btn_config.triggered.connect(self.show_config_window)
 
+        toolbar = QToolBar()
+        toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+        toolbar.setIconSize(QSize(16, 16))
+
         self.chb_active = QCheckBox('Active')
         self.chb_active.setStatusTip('Press Ctrl+T to switch text translation from clipboard on or off.')
 
         chb_hide = QCheckBox('Hide')
         chb_hide.setStatusTip('Hide the top text box.')
-        chb_hide.clicked.connect(self._checkbox_hide_clicked)
+        chb_hide.clicked.connect(self._checkbox_hide_clicked)  # noqa
         chb_hide.setChecked(self._main_window_appear())
-
-        toolbar = QToolBar()
-        toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        toolbar.setIconSize(QSize(16, 16))
 
         self._configure_swap_button(toolbar)
 
@@ -63,12 +64,27 @@ class MainWindow(QMainWindow):
         self.setStatusBar(QStatusBar(self))
 
     def _setup_listeners(self):
+        def set_raw_text(translated_text: TranslatedText):
+            if self.raw_text is not None:
+                self.raw_text.setPlainText(translated_text.raw_text)
+
+            if self.for_text is not None:
+                self.for_text.setPlainText(translated_text.translated_text)
+
         self.mouse_listener = MouseListener(self.translator, self.system_config)
-        self.mouse_listener.raw_text_signal.connect(self._set_raw_text)
+        self.mouse_listener.raw_text_signal.connect(set_raw_text)
 
         self.keyboard_listener = KeyboardListener(self.translator, self.system_config)
-        self.keyboard_listener.raw_text_signal.connect(self._set_raw_text)
+        self.keyboard_listener.raw_text_signal.connect(set_raw_text)
         self.keyboard_listener.hide_window_signal.connect(self._hide_window)
+
+    def _configure_active_checkbox(self, toolbar: QToolBar):
+        self.chb_active = QCheckBox('Active')
+        self.chb_active.setStatusTip('Press Ctrl+T to switch text translation from clipboard on or off.')
+
+        # Add this widget into the toolbar layout
+        toolbar.addWidget(self.chb_active)
+        toolbar.addSeparator()
 
     def _configure_swap_button(self, toolbar: QToolBar):
         def _connect_swap_button():
@@ -155,13 +171,6 @@ class MainWindow(QMainWindow):
         container = QWidget()
         container.setLayout(layout)
         self.setCentralWidget(container)
-
-    def _set_raw_text(self, translated_text: TranslatedText):
-        if self.raw_text is not None:
-            self.raw_text.setPlainText(translated_text.raw_text)
-
-        if self.for_text is not None:
-            self.for_text.setPlainText(translated_text.translated_text)
 
     def _hide_window(self, show: bool):
         if show:
